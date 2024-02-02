@@ -41,7 +41,7 @@ public class NoteRepository : INoteRepository
                 null);
         }
     }
-    public Note GetNoteByDate(long userId, DateTime dateTime)
+    public Note? GetNoteByDate(long userId, DateTime dateTime)
     {
         const string sql = """
                            select user_id, note_type, create_date, sugar_level, note_id

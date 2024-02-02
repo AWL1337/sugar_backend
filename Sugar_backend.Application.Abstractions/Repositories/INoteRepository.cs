@@ -7,7 +7,7 @@ public interface INoteRepository
 {
     IEnumerable<Note> GetAllNotes();
     
-    Note GetNoteByDate(long userId, DateTime dateTime);
+    Note? GetNoteByDate(long userId, DateTime dateTime);
     
     void DeleteNote(long userId, DateTime date);
     

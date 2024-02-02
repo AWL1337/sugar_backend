@@ -17,7 +17,7 @@ public interface IUserRepository
     
     void DeleteUserById(long id);
     
-    User FindUserByLogin(string login);
+    User? FindUserByLogin(string login);
     
     bool ChangeName(string login, string newName); 
     bool ChangeBirthday(string login, DateTime newBirthday);
