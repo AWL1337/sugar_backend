@@ -15,15 +15,65 @@ public class UserRepository : IUserRepository
         _connectionProvider = connectionProvider;
     }
 
-    public User? AddUser(string login, string password, string name, DateTime birthday, Gender gender, int weight,
-        int carbohydrateRatio, int breadUnit)
+    public User? AddUser(
+        string login,
+        string password,
+        string name,
+        DateTime birthday,
+        Gender gender,
+        int weight,
+        int carbohydrateRatio,
+        int breadUnit)
     {
-        throw new NotImplementedException();
+        const string sql = """
+                           INSERT INTO users (login, password, name, birthday, gender, weight, carbohydrate_ratio, bread_unit)
+                           VALUES (@login, @password, @name, @birthday, @gender, @weight, @carbohydrateRatio, @breadUnit)
+                           RETURNING id
+                           """;
+
+        var connection = _connectionProvider
+            .GetConnectionAsync(default)
+            .GetAwaiter()
+            .GetResult();
+
+        using var command = new NpgsqlCommand(sql, connection)
+            .AddParameter("login", login)
+            .AddParameter("password", password)
+            .AddParameter("name", name)
+            .AddParameter("birthday", birthday)
+            .AddParameter("gender", gender)
+            .AddParameter("weight", weight)
+            .AddParameter("carbohydrateRatio", carbohydrateRatio)
+            .AddParameter("breadUnit", breadUnit);
+
+        var reader = command.ExecuteReader();
+
+        if (reader.Read() is false)
+        {
+            return null;
+        }
+
+        var userId = reader.GetInt64(0);
+
+        return new User(userId, login, new UserInfo(name, birthday, gender, weight, carbohydrateRatio, breadUnit));
     }
 
     public void DeleteUserById(long id)
     {
-        throw new NotImplementedException();
+        const string sql = """
+                           delete *
+                           from users
+                           where login = :id;
+                           """;
+        var connection = _connectionProvider
+            .GetConnectionAsync(default)
+            .GetAwaiter()
+            .GetResult();
+
+        using var command = new NpgsqlCommand(sql, connection)
+            .AddParameter("id", id);
+
+        command.ExecuteNonQuery();
     }
 
     public User? FindUserByLogin(string login)
@@ -73,12 +123,40 @@ public class UserRepository : IUserRepository
 
     public bool ChangeBirthday(string login, DateTime newBirthday)
     {
-        throw new NotImplementedException();
+        var userId = FindUserByLogin(login)?.Id;
+        const string sql = "UPDATE user_info SET birthday = :newBirthday where user_id = :userId";
+
+        var connection = _connectionProvider
+            .GetConnectionAsync(default)
+            .GetAwaiter()
+            .GetResult();
+
+        using var command = new NpgsqlCommand(sql, connection)
+            .AddParameter("newBirthday", newBirthday)
+            .AddParameter("userId", userId);
+
+        command.ExecuteNonQueryAsync();
+
+        return true;
     }
 
     public bool ChangeGender(string login, Gender newGender)
     {
-        throw new NotImplementedException();
+        var userId = FindUserByLogin(login)?.Id;
+        const string sql = "UPDATE user_info SET gender = :newGender where user_id = :userId";
+
+        var connection = _connectionProvider
+            .GetConnectionAsync(default)
+            .GetAwaiter()
+            .GetResult();
+
+        using var command = new NpgsqlCommand(sql, connection)
+            .AddParameter("newGender", newGender)
+            .AddParameter("userId", userId);
+
+        command.ExecuteNonQueryAsync();
+
+        return true;
     }
 
     public bool ChangeWeight(string login, int newWeight)
