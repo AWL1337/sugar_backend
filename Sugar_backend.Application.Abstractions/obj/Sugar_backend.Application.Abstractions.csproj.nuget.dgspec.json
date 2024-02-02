@@ -1,0 +1,118 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Abstractions/Sugar_backend.Application.Abstractions.csproj": {}
+  },
+  "projects": {
+    "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Abstractions/Sugar_backend.Application.Abstractions.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Abstractions/Sugar_backend.Application.Abstractions.csproj",
+        "projectName": "Sugar_backend.Application.Abstractions",
+        "projectPath": "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Abstractions/Sugar_backend.Application.Abstractions.csproj",
+        "packagesPath": "/Users/aleksandrakr/.nuget/packages/",
+        "outputPath": "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Abstractions/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/aleksandrakr/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Models/Sugar_backend.Application.Models.csproj": {
+                "projectPath": "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Models/Sugar_backend.Application.Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.307/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Models/Sugar_backend.Application.Models.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Models/Sugar_backend.Application.Models.csproj",
+        "projectName": "Sugar_backend.Application.Models",
+        "projectPath": "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Models/Sugar_backend.Application.Models.csproj",
+        "packagesPath": "/Users/aleksandrakr/.nuget/packages/",
+        "outputPath": "/Users/aleksandrakr/RiderProjects/ClassLibrary3/Sugar_backend.Application.Models/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/aleksandrakr/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.307/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
