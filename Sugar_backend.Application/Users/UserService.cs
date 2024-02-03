@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Abstractions.Repositories;
 using Sugar_backend.Application.Contracts.Users;
@@ -32,7 +33,7 @@ public class UserService : IUserService
     public LoginResult Registration(string login, string password, string name, DateTime birthday, Gender gender, int weight,
         int height, int carbohydrateRatio, int breadUnit)
     {
-        User? user = _repository.FindUserByLogin(login);
+        var user = _repository.FindUserByLogin(login);
 
         if (user is not null)
         {
@@ -43,9 +44,22 @@ public class UserService : IUserService
         return new LoginResult.Success();
     }
 
-    public void GetStatistic()
+    public KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(INoteRepository repository)
     {
-        throw new NotImplementedException();
+        var allNotes = repository.GetAllNotes(_currentUserManager.User.login);
+
+        if (allNotes is null)
+            return null;
+        
+        Collection<DateTime> allDatesXOrdinat =  new();
+        Collection<int> allSugarLevelYOrdinat =  new();
+        foreach (var note in allNotes)
+        {
+            allDatesXOrdinat.Add(note.Date);
+            allSugarLevelYOrdinat.Add(note.SugarLevel);
+        }
+
+        return new KeyValuePair<Collection<DateTime>, Collection<int>>(allDatesXOrdinat, allSugarLevelYOrdinat);
     }
 
     public bool ChangeName(string newName)
@@ -76,15 +90,5 @@ public class UserService : IUserService
     public bool ChangeBreadUnit(int newBreadUnit)
     {
         return _repository.ChangeBreadUnit(_currentUserManager.User.login, newBreadUnit);
-    }
-
-    public void AddNote()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void AddNewProduct(string name, int carbs)
-    {
-        throw new NotImplementedException();
     }
 }

@@ -5,7 +5,7 @@ namespace Sugar_backend.Application.Abstractions.Repositories;
 
 public interface INoteRepository
 {
-    IEnumerable<Note> GetAllNotes();
+    IEnumerable<Note> GetAllNotes(string login);
     
     Note? GetNoteByDate(long userId, DateTime dateTime);
     

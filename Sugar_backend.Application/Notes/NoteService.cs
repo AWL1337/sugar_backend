@@ -14,9 +14,9 @@ public class NoteService : INoteService
         _repository = repository;
     }
     
-    public IEnumerable<Note> getAllNotes()
+    public IEnumerable<Note> getAllNotes(string login)
     {
-        return _repository.GetAllNotes();
+        return _repository.GetAllNotes(login);
     }
 
     public Note GetNoteByDate(long userId, DateTime dateTime)

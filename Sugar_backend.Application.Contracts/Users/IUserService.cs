@@ -1,4 +1,6 @@
+using System.Collections.ObjectModel;
 using Sugar_backend.Application.Models.Users;
+using Sugar_backend.Application.Abstractions.Repositories;
 
 namespace Sugar_backend.Application.Contracts.Users;
 
@@ -17,7 +19,7 @@ public interface IUserService
         int carbohydrateRatio, 
         int breadUnit);
 
-    void GetStatistic();
+    KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(INoteRepository repository);
     
     bool ChangeName(string newName);
     bool ChangeBirthday(DateTime newBirthday);
@@ -25,8 +27,4 @@ public interface IUserService
     bool ChangeWeight(int newWeight);
     bool ChangeCarbohydrateRatio(int newCarbohydrateRatio);
     bool ChangeBreadUnit(int newBreadUnit);
-
-    void AddNote();
-
-    void AddNewProduct(string name, int carbs);
 }

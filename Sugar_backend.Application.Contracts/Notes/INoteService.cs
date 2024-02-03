@@ -5,7 +5,7 @@ namespace Sugar_backend.Application.Contracts.Notes;
 
 public interface INoteService
 {
-    IEnumerable<Note> getAllNotes();
+    IEnumerable<Note> getAllNotes(string login);
 
     Note GetNoteByDate(long userId, DateTime dateTime);
 
