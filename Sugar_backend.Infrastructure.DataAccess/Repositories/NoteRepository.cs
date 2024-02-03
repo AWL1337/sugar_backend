@@ -17,19 +17,37 @@ public class NoteRepository : INoteRepository
         _connectionProvider = connectionProvider;
     }
     
-    public IEnumerable<Note> GetAllNotes()
+    public IEnumerable<Note> GetAllNotes(string login)
     {
-        const string sql = """
-                           select *
-                           from note_header
-                           """;
-
         var connection = _connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
+        
+        const string sqlUser = """
+                                  select user_id
+                                  from users
+                                  where login = :login
+                                  """;
+            
+        using var commanduser = new NpgsqlCommand(sqlUser, connection)
+            .AddParameter("login", login);
 
-        using var command = new NpgsqlCommand(sql, connection);
+        using var readerUser = commanduser.ExecuteReader();
+
+        if (readerUser.Read() is false)
+            return null;
+        
+        var userID = readerUser.GetInt32(0);
+
+        
+        const string sql = """
+                           select *
+                           from note_header
+                           where user_id =: userID
+                           """;
+
+        using var command = new NpgsqlCommand(sql, connection).AddParameter("user_id", userID);;
         using var reader = command.ExecuteReader();
 
         List<Note> notes = new();
