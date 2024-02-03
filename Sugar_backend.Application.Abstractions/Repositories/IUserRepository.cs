@@ -1,6 +1,6 @@
 using Sugar_backend.Application.Models.Users;
 
-namespace Sugar_backend.Application.Abstractions.Repositories;
+namespace Sugar_backend.Application.Abstraction.Repositories;
 
 public interface IUserRepository
 {
@@ -10,7 +10,8 @@ public interface IUserRepository
         string name, 
         DateTime birthday, 
         Gender gender, 
-        int weight, 
+        int weight,
+        int height,
         int carbohydrateRatio, 
         int breadUnit
         );

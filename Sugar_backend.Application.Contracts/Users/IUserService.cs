@@ -13,6 +13,7 @@ public interface IUserService
         DateTime birthday, 
         Gender gender, 
         int weight, 
+        int height,
         int carbohydrateRatio, 
         int breadUnit);
 

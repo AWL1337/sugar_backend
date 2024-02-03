@@ -1,3 +1,4 @@
+using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Abstractions.Repositories;
 using Sugar_backend.Application.Contracts.Users;
 using Sugar_backend.Application.Models.Users;
@@ -29,7 +30,7 @@ public class UserService : IUserService
     }
 
     public LoginResult Registration(string login, string password, string name, DateTime birthday, Gender gender, int weight,
-        int carbohydrateRatio, int breadUnit)
+        int height, int carbohydrateRatio, int breadUnit)
     {
         User? user = _repository.FindUserByLogin(login);
 
@@ -38,7 +39,7 @@ public class UserService : IUserService
             return new LoginResult.Failure();
         }
 
-        _repository.AddUser(login, password, name, birthday, gender, weight, carbohydrateRatio, breadUnit);
+        _repository.AddUser(login, password, name, birthday, gender, weight,height, carbohydrateRatio, breadUnit);
         return new LoginResult.Success();
     }
 

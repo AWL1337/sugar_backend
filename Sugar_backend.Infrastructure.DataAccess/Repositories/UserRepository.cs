@@ -1,7 +1,7 @@
 using Itmo.Dev.Platform.Postgres.Connection;
 using Itmo.Dev.Platform.Postgres.Extensions;
 using Npgsql;
-using Sugar_backend.Application.Abstractions.Repositories;
+using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Models.Users;
 
 namespace Sugar_backend.Infrastructure.DataAccess.Repositories;
@@ -22,13 +22,14 @@ public class UserRepository : IUserRepository
         DateTime birthday,
         Gender gender,
         int weight,
+        int height,
         int carbohydrateRatio,
         int breadUnit)
     {
         const string sql = """
-                           INSERT INTO users (login, password, name, birthday, gender, weight, carbohydrate_ratio, bread_unit)
-                           VALUES (@login, @password, @name, @birthday, @gender, @weight, @carbohydrateRatio, @breadUnit)
-                           RETURNING id
+                           INSERT INTO users (login, password)
+                           VALUES (@login, @password)
+                           RETURNING user_id
                            """;
 
         var connection = _connectionProvider
@@ -38,31 +39,38 @@ public class UserRepository : IUserRepository
 
         using var command = new NpgsqlCommand(sql, connection)
             .AddParameter("login", login)
-            .AddParameter("password", password)
+            .AddParameter("password", password);
+
+        var reader = command.ExecuteReader();
+        if (reader.Read() is false)
+            return null;
+
+        var id = reader.GetInt64(0);
+
+        const string sqlInfo = """
+                               INSERT INTO user_info(user_id, name, birthday, gender, weight, height, carbohydrate_ratio, bread_unit)
+                               VALUES(@id, @name, @birthday, @gender, @weight, @height, @carbohydrateRatio, @breadUnit)
+                               """;
+
+        using var commandInfo = new NpgsqlCommand(sqlInfo, connection)
+            .AddParameter("id", id)
             .AddParameter("name", name)
             .AddParameter("birthday", birthday)
             .AddParameter("gender", gender)
             .AddParameter("weight", weight)
+            .AddParameter("height", height)
             .AddParameter("carbohydrateRatio", carbohydrateRatio)
             .AddParameter("breadUnit", breadUnit);
 
-        var reader = command.ExecuteReader();
+        commandInfo.ExecuteNonQueryAsync();
 
-        if (reader.Read() is false)
-        {
-            return null;
-        }
-
-        var userId = reader.GetInt64(0);
-
-        return new User(userId, login, new UserInfo(name, birthday, gender, weight, carbohydrateRatio, breadUnit));
+        return new User(id, login, new UserInfo(name, birthday, gender, weight, carbohydrateRatio, breadUnit));
     }
 
     public void DeleteUserById(long id)
     {
         const string sql = """
-                           delete *
-                           from users
+                           delete from users
                            where login = :id;
                            """;
         var connection = _connectionProvider
