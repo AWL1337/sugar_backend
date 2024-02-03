@@ -3,8 +3,9 @@ namespace Sugar_backend.Infrastructure.DataAccess.Migration;
 using FluentMigrator;
 using Itmo.Dev.Platform.Postgres.Migrations;
 
-[Migrations(1,"Initial")]
-public class Initial : SqlMigration {
+[Migration(1, "Initial")]
+public class Initial : SqlMigration
+{
     protected override string GetUpSql(IServiceProvider serviceProvider) =>
         """
         create type note_types as enum
@@ -60,20 +61,17 @@ public class Initial : SqlMigration {
         product_id bigint not null references product(product_id),
         product_amount bigint not null
         );
-        """
-    
-    protected override string GetDownSql(IServiceProvider serviceProvider) =>
+        """;
 
+    protected override string GetDownSql(IServiceProvider serviceProvider) =>
         """
             drop table users cascade ;
             drop table product cascade ;
             drop table user_info cascade ;
-               drop table note_header cascade ;
-               drop table note_detail cascade ;
-               
-        
+            drop table note_header cascade ;
+            drop table note_detail cascade ;
+
             drop type genders;
             drop type note_types;
         """;
-    
 }

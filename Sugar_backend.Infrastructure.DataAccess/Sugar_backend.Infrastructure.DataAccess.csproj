@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -9,7 +9,7 @@
     <ItemGroup>
       <PackageReference Include="FluentMigrator" Version="5.0.0" />
       <PackageReference Include="FluentMigrator.Extensions.Postgres" Version="5.0.0" />
-      <PackageReference Include="Itmo.Dev.Platform.Postgres" Version="1.1.83" />
+      <PackageReference Include="Itmo.Dev.Platform.Postgres" Version="1.1.86" />
     </ItemGroup>
 
     <ItemGroup>
@@ -19,14 +19,17 @@
 
     <ItemGroup>
       <Compile Remove="obj\**" />
+      <Compile Remove="Migration\obj\**" />
     </ItemGroup>
 
     <ItemGroup>
       <EmbeddedResource Remove="obj\**" />
+      <EmbeddedResource Remove="Migration\obj\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="obj\**" />
+      <None Remove="Migration\obj\**" />
     </ItemGroup>
 
 </Project>
