@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentMigrator" Version="5.0.0" />
+      <PackageReference Include="FluentMigrator.Extensions.Postgres" Version="5.0.0" />
+      <PackageReference Include="Itmo.Dev.Platform.Postgres" Version="1.1.83" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Sugar_backend.Application.Abstractions\Sugar_backend.Application.Abstractions.csproj" />
+      <ProjectReference Include="..\Sugar_backend.Application.Models\Sugar_backend.Application.Models.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\**" />
+    </ItemGroup>
+
+</Project>
