@@ -11,4 +11,16 @@
       <ProjectReference Include="..\Sugar_backend.Application.Models\Sugar_backend.Application.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="obj\**" />
+    </ItemGroup>
+
 </Project>
