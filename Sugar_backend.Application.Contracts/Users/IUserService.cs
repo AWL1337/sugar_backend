@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
+using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Models.Users;
-using Sugar_backend.Application.Abstractions.Repositories;
 
-namespace Sugar_backend.Application.Contracts.Users;
+namespace Sugar_backend.Application.Contract.Users;
 
 public interface IUserService
 {

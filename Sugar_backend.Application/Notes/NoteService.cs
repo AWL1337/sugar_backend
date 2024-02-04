@@ -1,30 +1,20 @@
 using System.Collections.ObjectModel;
-using Sugar_backend.Application.Abstractions.Repositories;
-using Sugar_backend.Application.Contracts.Notes;
+using Sugar_backend.Application.Abstraction.Repositories;
+using Sugar_backend.Application.Contract.Notes;
 using Sugar_backend.Application.Models.Notes;
 using Sugar_backend.Application.Models.Users;
 
 namespace Sugar_backend.Application.Notes;
 
-public class NoteService : INoteService
+public class NoteService(INoteRepository repository) : INoteService
 {
-    private readonly INoteRepository _repository;
-    
-    public NoteService(INoteRepository repository)
+    public IEnumerable<Note> GetAllNotes(string login)
     {
-        _repository = repository;
-    }
-    
-    public IEnumerable<Note> getAllNotes(string login)
-    {
-        return _repository.GetAllNotes(login);
+        return repository.GetAllNotes(login);
     }
 
-    public Note GetNoteByDate(string login, DateTime dateTime)
-    {
-        return _repository.GetNoteByDate(login, dateTime);
-    }
-    
+    public Note? GetNoteByDate(string login, DateTime dateTime) => repository.GetNoteByDate(login, dateTime);
+
 
     public int GetNotesInsulin(DateTime dateTime, UserInfo userInfo, string login)
     {
@@ -35,11 +25,11 @@ public class NoteService : INoteService
 
     public int GetNoteCarbsAmount(DateTime dateTime, string login)
     {
-       return _repository.GetNoteCarbsAmount(dateTime, login);
+       return repository.GetNoteCarbsAmount(dateTime, login);
     }
     
     public void CreateNote(long login, NoteType type, DateTime date, int sugarLevel, Collection<NoteProduct> products)
     {
-        _repository.AddNote(login, type, date, sugarLevel, products);
+        repository.AddNote(login, type, date, sugarLevel, products);
     }
 }

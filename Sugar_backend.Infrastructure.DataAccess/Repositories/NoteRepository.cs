@@ -2,31 +2,24 @@ using Itmo.Dev.Platform.Postgres.Connection;
 using Npgsql;
 using System.Collections.ObjectModel;
 using Itmo.Dev.Platform.Postgres.Extensions;
-using Sugar_backend.Application.Abstractions.Repositories;
+using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Models.Notes;
 using Sugar_backend.Application.Models.Products;
 
 namespace Sugar_backend.Infrastructure.DataAccess.Repositories;
 
-public class NoteRepository : INoteRepository
+public class NoteRepository(IPostgresConnectionProvider connectionProvider) : INoteRepository
 {
-    private readonly IPostgresConnectionProvider _connectionProvider;
-    
-    public NoteRepository(IPostgresConnectionProvider connectionProvider)
-    {
-        _connectionProvider = connectionProvider;
-    }
-    
     public IEnumerable<Note> GetAllNotes(string login)
     {
-        var userRepository = new UserRepository(_connectionProvider);
+        var userRepository = new UserRepository(connectionProvider);
         
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
 
-        var userID = userRepository.GetUserID(login);
+        var userID = userRepository.GetUserId(login);
 
         
         const string sql = """
@@ -63,9 +56,9 @@ public class NoteRepository : INoteRepository
 
     public Note? GetNoteByDate(string login, DateTime dateTime)
     {
-        var userRepository = new UserRepository(_connectionProvider);
+        var userRepository = new UserRepository(connectionProvider);
 
-        var userID = userRepository.GetUserID(login);
+        var userID = userRepository.GetUserId(login);
         
         const string sql = """
                            select *
@@ -73,7 +66,7 @@ public class NoteRepository : INoteRepository
                            where create_date = :dateTime and user_id = :userId;
                            """;
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -97,7 +90,7 @@ public class NoteRepository : INoteRepository
 		
 		const string sqlDetail = """
                            select *
-                           from note_detaail
+                           from note_detail
                            where note_id = :noteID;
                            """;
 
@@ -132,13 +125,13 @@ public class NoteRepository : INoteRepository
 
     public void DeleteNote(string login, DateTime date)
     {
-        var userRepository = new UserRepository(_connectionProvider);
+        var userRepository = new UserRepository(connectionProvider);
 
-        var userID = userRepository.GetUserID(login);
+        var userID = userRepository.GetUserId(login);
         
         const string queryHeader = "DELETE FROM note_header WHERE create_date = :date and user_id = :userId";
         
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -176,7 +169,7 @@ public class NoteRepository : INoteRepository
     {
         const string query = "INSERT INTO note_header (user_id, note_type, create_date, sugar_level) VALUES (($1), ($2), ($3), ($4))";
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();

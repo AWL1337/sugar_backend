@@ -3,7 +3,7 @@ using Npgsql;
 using Sugar_backend.Application.Models.Notes;
 using Sugar_backend.Application.Models.Users;
 
-namespace Sugar_backend.Infrastructure.DataAccess.Extensions;
+namespace Sugar_backend.Infrastructure.DataAccess.Plugins;
 
 public class MappingPlugin : IDataSourcePlugin
 {

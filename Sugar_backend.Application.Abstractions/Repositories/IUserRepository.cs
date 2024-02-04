@@ -21,7 +21,7 @@ public interface IUserRepository
     
     User? FindUserByLogin(string login);
     
-    long GetUserID(string login);
+    long GetUserId(string login);
     
     bool ChangeName(string login, string newName); 
     bool ChangeBirthday(string login, DateTime newBirthday);

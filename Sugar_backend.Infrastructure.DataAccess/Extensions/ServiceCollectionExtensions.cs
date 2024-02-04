@@ -3,7 +3,7 @@ using Itmo.Dev.Platform.Postgres.Models;
 using Itmo.Dev.Platform.Postgres.Plugins;
 using Microsoft.Extensions.DependencyInjection;
 using Sugar_backend.Application.Abstraction.Repositories;
-using Sugar_backend.Application.Abstractions.Repositories;
+using Sugar_backend.Infrastructure.DataAccess.Plugins;
 using Sugar_backend.Infrastructure.DataAccess.Repositories;
 
 namespace Sugar_backend.Infrastructure.DataAccess.Extensions;

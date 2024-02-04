@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using Sugar_backend.Application.Abstraction.Repositories;
-using Sugar_backend.Application.Abstractions.Repositories;
-using Sugar_backend.Application.Contracts.Users;
+using Sugar_backend.Application.Contract.Users;
 using Sugar_backend.Application.Models.Users;
 
 namespace Sugar_backend.Application.Users;

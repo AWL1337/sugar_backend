@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using Sugar_backend.Application.Models.Notes;
 
-namespace Sugar_backend.Application.Abstractions.Repositories;
+namespace Sugar_backend.Application.Abstraction.Repositories;
 
 public interface INoteRepository
 {

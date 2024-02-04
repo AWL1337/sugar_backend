@@ -1,10 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using Sugar_backend.Application.Contracts.Notes;
-using Sugar_backend.Application.Contracts.Users;
+using Sugar_backend.Application.Contract.Notes;
+using Sugar_backend.Application.Contract.Products;
+using Sugar_backend.Application.Contract.Users;
 using Sugar_backend.Application.Notes;
 using Sugar_backend.Application.Products;
 using Sugar_backend.Application.Users;
-using Sugar_backendar.Application.Contracts.Products;
 
 namespace Sugar_backend.Application.Extensions;
 

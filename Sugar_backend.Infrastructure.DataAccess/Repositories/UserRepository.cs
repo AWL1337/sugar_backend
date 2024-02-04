@@ -6,15 +6,8 @@ using Sugar_backend.Application.Models.Users;
 
 namespace Sugar_backend.Infrastructure.DataAccess.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(IPostgresConnectionProvider connectionProvider) : IUserRepository
 {
-    private readonly IPostgresConnectionProvider _connectionProvider;
-
-    public UserRepository(IPostgresConnectionProvider connectionProvider)
-    {
-        _connectionProvider = connectionProvider;
-    }
-
     public User? AddUser(
         string login,
         string password,
@@ -32,7 +25,7 @@ public class UserRepository : IUserRepository
                            RETURNING user_id
                            """;
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -75,7 +68,7 @@ public class UserRepository : IUserRepository
                            where login = :login
                            and password = :password
                            """;
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -99,7 +92,7 @@ public class UserRepository : IUserRepository
                            delete from users
                            where login = :id;
                            """;
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -117,7 +110,7 @@ public class UserRepository : IUserRepository
                            from users
                            where login = :login;
                            """;
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -136,19 +129,19 @@ public class UserRepository : IUserRepository
             reader.GetFieldValue<UserInfo>(2));
     }
 
-    public long GetUserID(string login)
+    public long GetUserId(string login)
     {
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
-        
+
         const string sqlUser = """
                                select user_id
                                from users
                                where login = :login
                                """;
-            
+
         using var commanduser = new NpgsqlCommand(sqlUser, connection)
             .AddParameter("login", login);
 
@@ -156,8 +149,8 @@ public class UserRepository : IUserRepository
 
         if (readerUser.Read() is false)
             return 0;
-        
-       return readerUser.GetInt32(0);
+
+        return readerUser.GetInt32(0);
     }
 
     public bool ChangeName(string login, string newName)
@@ -165,7 +158,7 @@ public class UserRepository : IUserRepository
         var userId = FindUserByLogin(login)?.Id;
         const string sql = "UPDATE user_info SET name = :newName where user_id = :userId";
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -184,7 +177,7 @@ public class UserRepository : IUserRepository
         var userId = FindUserByLogin(login)?.Id;
         const string sql = "UPDATE user_info SET birthday = :newBirthday where user_id = :userId";
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -203,7 +196,7 @@ public class UserRepository : IUserRepository
         var userId = FindUserByLogin(login)?.Id;
         const string sql = "UPDATE user_info SET gender = :newGender where user_id = :userId";
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -222,7 +215,7 @@ public class UserRepository : IUserRepository
         var userId = FindUserByLogin(login)?.Id;
         const string sql = "UPDATE user_info SET weight = :newWeight where user_id = :userId";
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -241,7 +234,7 @@ public class UserRepository : IUserRepository
         var userId = FindUserByLogin(login)?.Id;
         const string sql = "UPDATE user_info SET carbohydrate_ratio = :newCarbohydrateRatio where user_id = :userId";
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -260,7 +253,7 @@ public class UserRepository : IUserRepository
         var userId = FindUserByLogin(login)?.Id;
         const string sql = "UPDATE user_info SET bread_unit = :newBreadUnit where user_id = :userId";
 
-        var connection = _connectionProvider
+        var connection = connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();

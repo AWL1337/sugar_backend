@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Mvc;
-using Sugar_backend.Application.Abstractions.Repositories;
+using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Models.Notes;
 
 namespace Controllers;
@@ -9,24 +9,22 @@ namespace Controllers;
 [Route("api/note")]
 public class NoteController(INoteRepository noteRepository)
 {
-    private INoteRepository _noteRepository { get; } = noteRepository;
-
     [HttpGet]
     public JsonResult GetAllNotes(string login)
     {
-        return new JsonResult(_noteRepository.GetAllNotes(login));
+        return new JsonResult(noteRepository.GetAllNotes(login));
     }
 
     [HttpGet]
     public JsonResult GetNoteCarbsAmount(DateTime dateTime, string login)
     {
-        return new JsonResult(_noteRepository.GetNoteCarbsAmount(dateTime, login));
+        return new JsonResult(noteRepository.GetNoteCarbsAmount(dateTime, login));
     }
 
     [HttpGet]
     public JsonResult GetNoteByDate(string login, DateTime dateTime)
     {
-        return new JsonResult(_noteRepository.GetNoteByDate(login, dateTime));
+        return new JsonResult(noteRepository.GetNoteByDate(login, dateTime));
     }
 
     [HttpPost]
@@ -37,12 +35,12 @@ public class NoteController(INoteRepository noteRepository)
         int sugarLevel,
         Collection<NoteProduct> products)
     {
-        _noteRepository.AddNote(userId, type, date, sugarLevel,products);
+        noteRepository.AddNote(userId, type, date, sugarLevel, products);
     }
 
     [HttpDelete]
     public void DeleteNote(string login, DateTime date)
     {
-        _noteRepository.DeleteNote(login, date);
+        noteRepository.DeleteNote(login, date);
     }
 }
