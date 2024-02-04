@@ -43,7 +43,7 @@ public class UserRepository : IUserRepository
 
         var reader = command.ExecuteReader();
         if (reader.Read() is false)
-            return null;
+            return new User();
 
         var id = reader.GetInt64(0);
 
@@ -65,6 +65,32 @@ public class UserRepository : IUserRepository
         commandInfo.ExecuteNonQueryAsync();
 
         return new User(id, login, new UserInfo(name, birthday, gender, weight, carbohydrateRatio, breadUnit));
+    }
+
+    public User? FindUser(string login, string password)
+    {
+        const string sql = """
+                           select *
+                           from users
+                           where login = :login
+                           and password = :password
+                           """;
+        var connection = _connectionProvider
+            .GetConnectionAsync(default)
+            .GetAwaiter()
+            .GetResult();
+        using var command = new NpgsqlCommand(sql, connection)
+            .AddParameter("login", login)
+            .AddParameter("password", password);
+
+        using var reader = command.ExecuteReader();
+        if (reader.Read() is false)
+            return new User();
+
+        return new User(
+            reader.GetInt64(0),
+            reader.GetString(1),
+            reader.GetFieldValue<UserInfo>(2));
     }
 
     public void DeleteUserById(long id)
@@ -102,7 +128,7 @@ public class UserRepository : IUserRepository
         using var reader = command.ExecuteReader();
 
         if (reader.Read() is false)
-            return null;
+            return new User();
 
         return new User(
             reader.GetInt64(0),

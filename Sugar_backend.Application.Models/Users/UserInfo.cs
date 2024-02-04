@@ -7,4 +7,7 @@ public record UserInfo(
     int weight, 
     int carbohydrateRatio, 
     int grainUnit
-    );
+)
+{
+    public UserInfo() : this("", DateTime.Now, Gender.Male, 0, 0, 0) { }
+}

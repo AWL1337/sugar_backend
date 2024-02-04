@@ -15,7 +15,8 @@ public interface IUserRepository
         int carbohydrateRatio, 
         int breadUnit
         );
-    
+
+    User? FindUser(string login, string password);
     void DeleteUserById(long id);
     
     User? FindUserByLogin(string login);
