@@ -22,7 +22,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.App", "Present
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controllers", "Controllers", "{2F2B3EAC-FD5C-4BE1-93BD-B1151012DC52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{0C87B702-F38B-4012-B0C8-4C5781C0DC5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sugar_backend.Controllers", "Sugar_backend.Controllers\Sugar_backend.Controllers.csproj", "{0C87B702-F38B-4012-B0C8-4C5781C0DC5D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
