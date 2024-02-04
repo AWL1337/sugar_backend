@@ -1,6 +1,7 @@
 using Itmo.Dev.Platform.Postgres.Connection;
 using Itmo.Dev.Platform.Postgres.Extensions;
 using Npgsql;
+using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Abstractions.Repositories;
 using Sugar_backend.Application.Models.Products;
 

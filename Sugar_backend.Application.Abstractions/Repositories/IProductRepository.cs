@@ -1,6 +1,6 @@
 using Sugar_backend.Application.Models.Products;
 
-namespace Sugar_backend.Application.Abstractions.Repositories;
+namespace Sugar_backend.Application.Abstraction.Repositories;
 
 public interface IProductRepository
 {

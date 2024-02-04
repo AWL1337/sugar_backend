@@ -1,3 +1,4 @@
+using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Abstractions.Repositories;
 using Sugar_backend.Application.Models.Products;
 using Sugar_backend.Application.Models.Users;
