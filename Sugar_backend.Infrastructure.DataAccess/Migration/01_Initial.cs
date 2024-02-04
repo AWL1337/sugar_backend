@@ -42,7 +42,7 @@ public class Initial : SqlMigration
         create table product
         (
         product_id bigint primary key generated always as identity,
-        product_name text not null unique,
+        product_name text not null,
         carbs bigint not null
         );
 
