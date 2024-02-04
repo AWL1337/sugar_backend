@@ -6,10 +6,11 @@ namespace Sugar_backend.Application.Abstractions.Repositories;
 public interface INoteRepository
 {
     IEnumerable<Note> GetAllNotes(string login);
+    int GetNoteCarbsAmount(DateTime dateTime, string login);
     
-    Note? GetNoteByDate(long userId, DateTime dateTime);
+    Note? GetNoteByDate(string login, DateTime dateTime);
     
-    void DeleteNote(long userId, DateTime date);
+    void DeleteNote(string login, DateTime date);
     
     void AddNote(
         long userId, 

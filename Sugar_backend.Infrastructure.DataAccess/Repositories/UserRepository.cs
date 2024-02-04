@@ -110,6 +110,30 @@ public class UserRepository : IUserRepository
             reader.GetFieldValue<UserInfo>(2));
     }
 
+    public long GetUserID(string login)
+    {
+        var connection = _connectionProvider
+            .GetConnectionAsync(default)
+            .GetAwaiter()
+            .GetResult();
+        
+        const string sqlUser = """
+                               select user_id
+                               from users
+                               where login = :login
+                               """;
+            
+        using var commanduser = new NpgsqlCommand(sqlUser, connection)
+            .AddParameter("login", login);
+
+        using var readerUser = commanduser.ExecuteReader();
+
+        if (readerUser.Read() is false)
+            return 0;
+        
+       return readerUser.GetInt32(0);
+    }
+
     public bool ChangeName(string login, string newName)
     {
         var userId = FindUserByLogin(login)?.Id;

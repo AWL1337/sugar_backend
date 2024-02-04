@@ -19,26 +19,14 @@ public class NoteRepository : INoteRepository
     
     public IEnumerable<Note> GetAllNotes(string login)
     {
+        var userRepository = new UserRepository(_connectionProvider);
+        
         var connection = _connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
-        
-        const string sqlUser = """
-                                  select user_id
-                                  from users
-                                  where login = :login
-                                  """;
-            
-        using var commanduser = new NpgsqlCommand(sqlUser, connection)
-            .AddParameter("login", login);
 
-        using var readerUser = commanduser.ExecuteReader();
-
-        if (readerUser.Read() is false)
-            return null;
-        
-        var userID = readerUser.GetInt32(0);
+        var userID = userRepository.GetUserID(login);
 
         
         const string sql = """
@@ -63,12 +51,26 @@ public class NoteRepository : INoteRepository
 
         return notes;
     }
-    public Note? GetNoteByDate(long userId, DateTime dateTime)
+
+    public int GetNoteCarbsAmount(DateTime dateTime, string login)
     {
+        
+        var note = GetNoteByDate(login, dateTime);
+
+        var carbs = note.Products.Sum(noteProduct => noteProduct.Product.Carbs);
+        return carbs;
+    }
+
+    public Note? GetNoteByDate(string login, DateTime dateTime)
+    {
+        var userRepository = new UserRepository(_connectionProvider);
+
+        var userID = userRepository.GetUserID(login);
+        
         const string sql = """
                            select *
                            from note_header
-                           where create_date = :dateTime;
+                           where create_date = :dateTime and user_id = :userId;
                            """;
 
         var connection = _connectionProvider
@@ -77,7 +79,7 @@ public class NoteRepository : INoteRepository
             .GetResult();
 
         using var command = new NpgsqlCommand(sql, connection)
-            .AddParameter("dateTime", dateTime);
+            .AddParameter("dateTime", dateTime).AddParameter("user_id", userID);
 
         using var reader = command.ExecuteReader();
 
@@ -128,10 +130,13 @@ public class NoteRepository : INoteRepository
         return note;
     }
 
-    public void DeleteNote(long userId, DateTime date)
+    public void DeleteNote(string login, DateTime date)
     {
-        const string queryHeader = "DELETE FROM note_header WHERE create_date = :date";
-        const string queryDetail = "DELETE FROM note_detail WHERE create_date = :date";
+        var userRepository = new UserRepository(_connectionProvider);
+
+        var userID = userRepository.GetUserID(login);
+        
+        const string queryHeader = "DELETE FROM note_header WHERE create_date = :date and user_id = :userId";
         
         var connection = _connectionProvider
             .GetConnectionAsync(default)
@@ -140,11 +145,29 @@ public class NoteRepository : INoteRepository
 
         using var cmdHeader = new NpgsqlCommand(queryHeader, connection);
         cmdHeader.Parameters.AddWithValue(date);
+        cmdHeader.Parameters.AddWithValue(userID);
 
         cmdHeader.ExecuteNonQueryAsync();
         
+        const string sqlNote = """
+                               select note_id
+                               from note_header
+                               where create_date = :date
+                               """;
+            
+        using var commandNote = new NpgsqlCommand(sqlNote, connection)
+            .AddParameter("create_date", date);
+
+        using var readerNote = commandNote.ExecuteReader();
+
+        if (readerNote.Read() is false)
+            return;
+        var noteId = readerNote.GetInt64(0);
+        
+        const string queryDetail = "DELETE FROM note_detail WHERE create_date = :date and note_id = :noteId";
         using var cmdDetail = new NpgsqlCommand(queryDetail, connection);
-        cmdHeader.Parameters.AddWithValue(date);
+        cmdDetail.Parameters.AddWithValue(date);
+        cmdDetail.Parameters.AddWithValue(noteId);
 
         cmdDetail.ExecuteNonQueryAsync();
     }
@@ -170,7 +193,7 @@ public class NoteRepository : INoteRepository
         const string sqlNote = """
                                   select note_id
                                   from note_header
-                                  where create_date = :date
+                                  where create_date = :date and user_id = :userId
                                   """;
             
         using var commandNote = new NpgsqlCommand(sqlNote, connection)

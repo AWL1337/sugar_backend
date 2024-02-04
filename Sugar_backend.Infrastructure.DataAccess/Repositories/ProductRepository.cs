@@ -40,6 +40,29 @@ public class ProductRepository : IProductRepository
             reader.GetInt32(2));
     }
 
+    public int GetCarbsAmount(string name)
+    {
+        const string sql = """
+                           select *
+                           from product
+                           where product_name = :name;
+                           """;
+        var connection = _connectionProvider
+            .GetConnectionAsync(default)
+            .GetAwaiter()
+            .GetResult();
+
+        using var command = new NpgsqlCommand(sql, connection)
+            .AddParameter("name", name);
+
+        using var reader = command.ExecuteReader();
+
+        if (reader.Read() is false)
+            return 0;
+
+        return reader.GetInt32(2);
+    }
+
     public void AddProduct(string name, int carbs)
     {
         const string query = "INSERT INTO product(product_name, carbs) VALUES (($1),($2))";
