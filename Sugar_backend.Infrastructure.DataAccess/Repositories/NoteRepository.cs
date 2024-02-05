@@ -20,19 +20,21 @@ public class NoteRepository : INoteRepository
 
     public INoteRepository Create(IPostgresConnectionProvider connectionProvider)
     {
-        return Instance ??= new NoteRepository(connectionProvider);
+        if (Instance is null)
+            return Instance = new NoteRepository(connectionProvider);
+        return Instance;
     }
 
     public IEnumerable<Note> GetAllNotes(string login)
     {
-        var userRepository = UserRepository.Instance;
+        var userRepository = new UserRepository(_connectionProvider);
 
         var connection = _connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
 
-        var userId = userRepository?.GetUserId(login);
+        var userID = userRepository.GetUserId(login);
 
 
         const string sql = """
@@ -41,7 +43,7 @@ public class NoteRepository : INoteRepository
                            where user_id =: userID
                            """;
 
-        using var command = new NpgsqlCommand(sql, connection).AddParameter("user_id", userId);
+        using var command = new NpgsqlCommand(sql, connection).AddParameter("user_id", userID);
         ;
         using var reader = command.ExecuteReader();
 
@@ -53,7 +55,7 @@ public class NoteRepository : INoteRepository
                 reader.GetFieldValue<NoteType>(2),
                 reader.GetDateTime(3),
                 reader.GetInt16(4),
-                new Collection<NoteProduct>()));
+                null));
         }
 
         return notes;
@@ -69,9 +71,9 @@ public class NoteRepository : INoteRepository
 
     public Note? GetNoteByDate(string login, DateTime dateTime)
     {
-        var userRepository = UserRepository.Instance;
+        var userRepository = new UserRepository(_connectionProvider);
 
-        var userId = userRepository?.GetUserId(login);
+        var userID = userRepository.GetUserId(login);
 
         const string sql = """
                            select *
@@ -85,7 +87,7 @@ public class NoteRepository : INoteRepository
             .GetResult();
 
         using var command = new NpgsqlCommand(sql, connection)
-            .AddParameter("dateTime", dateTime).AddParameter("user_id", userId);
+            .AddParameter("dateTime", dateTime).AddParameter("user_id", userID);
 
         using var reader = command.ExecuteReader();
 
@@ -99,7 +101,7 @@ public class NoteRepository : INoteRepository
             reader.GetInt16(4),
             null);
 
-        var noteId = reader.GetInt64(0);
+        var noteID = reader.GetInt64(0);
 
         const string sqlDetail = """
                                  select *
@@ -108,7 +110,7 @@ public class NoteRepository : INoteRepository
                                  """;
 
 
-        using var commandDetail = new NpgsqlCommand(sqlDetail, connection).AddParameter("note_id", noteId);
+        using var commandDetail = new NpgsqlCommand(sqlDetail, connection).AddParameter("note_id", noteID);
         using var readerDetail = commandDetail.ExecuteReader();
 
         while (readerDetail.Read())
@@ -138,9 +140,9 @@ public class NoteRepository : INoteRepository
 
     public void DeleteNote(string login, DateTime date)
     {
-        var userRepository = UserRepository.Instance;
+        var userRepository = new UserRepository(_connectionProvider);
 
-        var userId = userRepository?.GetUserId(login);
+        var userID = userRepository.GetUserId(login);
 
         const string queryHeader = "DELETE FROM note_header WHERE create_date = :date and user_id = :userId";
 
@@ -151,7 +153,7 @@ public class NoteRepository : INoteRepository
 
         using var cmdHeader = new NpgsqlCommand(queryHeader, connection);
         cmdHeader.Parameters.AddWithValue(date);
-        cmdHeader.Parameters.AddWithValue(userId);
+        cmdHeader.Parameters.AddWithValue(userID);
 
         cmdHeader.ExecuteNonQueryAsync();
 
@@ -227,14 +229,14 @@ public class NoteRepository : INoteRepository
 
             if (readerProduct.Read() is false)
                 return;
-            var productId = readerProduct.GetInt32(0);
+            var productID = readerProduct.GetInt32(0);
 
             const string queryDetails =
                 "INSERT INTO note_detail (note_id, product_id, product_amount) VALUES (($1), ($2), ($3))";
 
             using var cmdDetails = new NpgsqlCommand(queryDetails, connection);
             cmdDetails.Parameters.AddWithValue(noteId);
-            cmdDetails.Parameters.AddWithValue(productId);
+            cmdDetails.Parameters.AddWithValue(productID);
             cmdDetails.Parameters.AddWithValue(product.Amount);
 
             cmdDetails.ExecuteNonQueryAsync();
