@@ -71,4 +71,32 @@ public class ProductRepository(IPostgresConnectionProvider connectionProvider) :
 
         cmd.ExecuteNonQueryAsync();
     }
+    public IEnumerable<Product> GetProductContainsValue(string value)
+    {
+        var connection = connectionProvider
+            .GetConnectionAsync(default)
+            .GetAwaiter()
+            .GetResult();
+
+        
+        const string sql = @"
+        SELECT *
+        FROM product
+        WHERE product_name LIKE @value
+    ";
+
+        using var command = new NpgsqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@value", $"%{value}%");;
+        using var reader = command.ExecuteReader();
+
+        List<Product> notes = new();
+        while (reader.Read())
+        {
+            notes.Add( new Product(
+                reader.GetString(1),
+                reader.GetInt32(2)));
+        }
+
+        return notes;
+    }
 }

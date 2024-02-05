@@ -5,6 +5,8 @@ namespace Sugar_backend.Application.Abstraction.Repositories;
 public interface IProductRepository
 {
     Product? GetProductByName(string name);
+    public IEnumerable<Product> GetProductContainsValue(string value);
+
 
     int GetCarbsAmount(string name);
 
