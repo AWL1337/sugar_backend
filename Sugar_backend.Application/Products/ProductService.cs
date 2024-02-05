@@ -29,4 +29,9 @@ public class ProductService(IProductRepository repository) : IProductService
     {
         repository.AddProduct(name, carbs);
     }
+
+    public IEnumerable<Product> GetProductContainsValue(string name)
+    {
+        return repository.GetProductContainsValue(name);
+    }
 }

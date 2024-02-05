@@ -10,4 +10,6 @@ public interface IProductService
     int GetCarbsAmountInProduct(string name);
 
     void CreateProduct(string name, int carbs);
+
+    IEnumerable<Product> GetProductContainsValue(string name);
 }

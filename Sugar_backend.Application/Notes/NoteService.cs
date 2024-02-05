@@ -32,4 +32,9 @@ public class NoteService(INoteRepository repository) : INoteService
     {
         repository.AddNote(login, type, date, sugarLevel, products);
     }
+
+    public void DeleteNote(string login, DateTime date)
+    {
+        repository.DeleteNote(login, date);
+    }
 }

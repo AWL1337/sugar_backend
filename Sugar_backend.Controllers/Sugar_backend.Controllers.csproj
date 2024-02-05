@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Sugar_backend.Application.Abstractions\Sugar_backend.Application.Abstractions.csproj" />
+      <ProjectReference Include="..\Sugar_backend.Application.Contracts\Sugar_backend.Application.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

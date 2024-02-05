@@ -19,4 +19,6 @@ public interface INoteService
         DateTime date,
         int sugarLevel,
         Collection<NoteProduct> products);
+
+    void DeleteNote(string login, DateTime date);
 }

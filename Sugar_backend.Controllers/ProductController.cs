@@ -1,33 +1,42 @@
 using Microsoft.AspNetCore.Mvc;
 using Sugar_backend.Application.Abstraction.Repositories;
+using Sugar_backend.Application.Contract.Products;
+using Sugar_backend.Application.Models.Users;
 
 namespace Controllers;
 
 [ApiController]
 [Route("api/product")]
-public class ProductController(IProductRepository productRepository)
+public class ProductController(IProductService productService)
 {
     [HttpGet]
     public JsonResult GetProductByName(string name)
     {
-        return new JsonResult(productRepository.GetProductByName(name));
+        return new JsonResult(productService.GetProductByName(name));
     }
 
     [HttpGet]
-    public JsonResult GetCarbsAmount(string name)
+    public JsonResult GetCarbsAmountInProduct(string name)
     {
-        return new JsonResult(productRepository.GetCarbsAmount(name));
+        return new JsonResult(productService.GetCarbsAmountInProduct(name));
     }
 
     [HttpGet]
     public JsonResult GetProductContainsValue(string name)
     {
-        return new JsonResult(productRepository.GetProductContainsValue(name));
+        return new JsonResult(productService.GetProductContainsValue(name));
+    }
+
+    [HttpGet]
+    public JsonResult GetInsulinRiseAfterProduct(string name, UserInfo userInfo)
+    {
+        return new JsonResult(productService.GetInsulinRiseAfterProduct(name, userInfo));
+        
     }
 
     [HttpPost]
-    public void AddProduct(string name, int carbs)
+    public void PostCreateProduct(string name, int carbs)
     {
-        productRepository.AddProduct(name, carbs);
+        productService.CreateProduct(name, carbs);
     }
 }

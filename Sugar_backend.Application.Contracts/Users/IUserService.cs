@@ -7,24 +7,26 @@ namespace Sugar_backend.Application.Contract.Users;
 public interface IUserService
 {
     LoginResult Login(string login, string password);
-    
+
     LoginResult Registration(
-        string login, 
-        string password,  
-        string name, 
-        DateTime birthday, 
-        Gender gender, 
-        int weight, 
+        string login,
+        string password,
+        string name,
+        DateTime birthday,
+        Gender gender,
+        int weight,
         int height,
-        int carbohydrateRatio, 
+        int carbohydrateRatio,
         int breadUnit);
 
-    KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(INoteRepository repository);
-    
-    bool ChangeName(string newName);
-    bool ChangeBirthday(DateTime newBirthday);
-    bool ChangeGender(Gender newGender);
-    bool ChangeWeight(int newWeight);
-    bool ChangeCarbohydrateRatio(int newCarbohydrateRatio);
-    bool ChangeBreadUnit(int newBreadUnit);
+    KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(string login);
+
+    bool ChangeName(string login, string newName);
+    bool ChangeBirthday(string login, DateTime newBirthday);
+    bool ChangeGender(string login, Gender newGender);
+    bool ChangeWeight(string login, int newWeight);
+    bool ChangeCarbohydrateRatio(string login, int newCarbohydrateRatio);
+    bool ChangeBreadUnit(string login, int newBreadUnit);
+
+    void DeleteUserById(long id);
 }
