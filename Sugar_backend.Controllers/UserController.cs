@@ -9,13 +9,13 @@ namespace Controllers;
 [Route($"api/users")]
 public class UserController(IUserService userService)
 {
-    [HttpGet]
+    [HttpGet("{login}/{password}")]
     public JsonResult GetUser(string login, string password)
     {
         return new JsonResult(userService.Login(login, password));
     }
 
-    [HttpGet]
+    [HttpGet("statistics/{login}")]
     public JsonResult GetStatistic(string login)
     {
         return new JsonResult(userService.GetStatistic(login));
@@ -39,43 +39,43 @@ public class UserController(IUserService userService)
             breadUnit));
     }
 
-    [HttpPut]
+    [HttpPut("changeName/{login}")]
     public JsonResult PutChangeName(string login, string newName)
     {
         return new JsonResult(userService.ChangeName(login, newName));
     }
 
-    [HttpPut]
+    [HttpPut("changeBirthday/{login}")]
     public JsonResult PutChangeBirthday(string login, DateTime newBirthday)
     {
         return new JsonResult(userService.ChangeBirthday(login, newBirthday));
     }
 
-    [HttpPut]
+    [HttpPut("changeGender/{login}")]
     public JsonResult PutChangeGender(string login, Gender newGender)
     {
         return new JsonResult(userService.ChangeGender(login, newGender));
     }
 
-    [HttpPut]
+    [HttpPut("changeWeight/{login}")]
     public JsonResult PutChangeWeight(string login, int newWeight)
     {
         return new JsonResult(userService.ChangeWeight(login, newWeight));
     }
 
-    [HttpPut]
+    [HttpPut("changeCarbohydrateRatio/{login}")]
     public JsonResult PutChangeCarbohydrateRatio(string login, int newCarbohydrateRatio)
     {
         return new JsonResult(userService.ChangeCarbohydrateRatio(login, newCarbohydrateRatio));
     }
 
-    [HttpPut]
+    [HttpPut("changeBreadUnit/{login}")]
     public JsonResult PutChangeBreadUnit(string login, int newBreadUnit)
     {
         return new JsonResult(userService.ChangeBreadUnit(login, newBreadUnit));
     }
 
-    [HttpDelete]
+    [HttpDelete("delete/{id}")]
     public void DeleteUserById(long id)
     {
         userService.DeleteUserById(id);

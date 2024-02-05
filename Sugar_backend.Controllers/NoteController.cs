@@ -10,19 +10,19 @@ namespace Controllers;
 [Route("api/note")]
 public class NoteController(INoteService noteService)
 {
-    [HttpGet]
+    [HttpGet("getAllNotes/{login}")]
     public JsonResult GetAllNotes(string login)
     {
         return new JsonResult(noteService.GetAllNotes(login));
     }
 
-    [HttpGet]
+    [HttpGet("carbsAmount/{dateTime}/{login}")]
     public JsonResult GetNoteCarbsAmount(DateTime dateTime, string login)
     {
         return new JsonResult(noteService.GetNoteCarbsAmount(dateTime, login));
     }
 
-    [HttpGet]
+    [HttpGet("notebyDate/{login}/{dateTime}")]
     public JsonResult GetNoteByDate(string login, DateTime dateTime)
     {
         return new JsonResult(noteService.GetNoteByDate(login, dateTime));
@@ -39,7 +39,7 @@ public class NoteController(INoteService noteService)
         noteService.CreateNote(userId, type, date, sugarLevel, products);
     }
 
-    [HttpDelete]
+    [HttpDelete("delete/{login}/{date}")]
     public void DeleteNote(string login, DateTime date)
     {
         noteService.DeleteNote(login, date);
