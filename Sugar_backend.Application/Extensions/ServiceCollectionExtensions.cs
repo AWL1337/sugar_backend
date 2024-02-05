@@ -15,11 +15,6 @@ public static class ServiceCollectionExtensions
         collection.AddScoped<IUserService, UserService>();
         collection.AddScoped<IProductService, ProductService>();
         collection.AddScoped<INoteService, NoteService>();
-
-        collection.AddScoped<CurrentUserManager>();
-        collection.AddScoped<ICurrentUserService>(
-            p => p.GetRequiredService<CurrentUserManager>());
-
         return collection;
     }
 }
