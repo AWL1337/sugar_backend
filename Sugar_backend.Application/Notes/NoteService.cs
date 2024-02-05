@@ -3,6 +3,7 @@ using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Contract.Notes;
 using Sugar_backend.Application.Models.Notes;
 using Sugar_backend.Application.Models.Users;
+using Sugar_backend.Infrastructure.DataAccess.Repositories;
 
 namespace Sugar_backend.Application.Notes;
 
@@ -10,7 +11,7 @@ public class NoteService(INoteRepository repository) : INoteService
 {
     public IEnumerable<Note> GetAllNotes(string login)
     {
-        return repository.GetAllNotes(login);
+        return NoteRepository.GetAllNotes(login);
     }
 
     public Note? GetNoteByDate(string login, DateTime dateTime) => repository.GetNoteByDate(login, dateTime);

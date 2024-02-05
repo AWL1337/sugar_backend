@@ -38,7 +38,7 @@ public class UserService(IUserRepository repository)
 
     public KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(string login)
     {
-        var allNotes = NoteRepository.Instance?.GetAllNotes(login);
+        var allNotes = NoteRepository.GetAllNotes(login);
 
         if (allNotes is null)
             return new KeyValuePair<Collection<DateTime>, Collection<int>>();

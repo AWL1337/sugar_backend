@@ -19,9 +19,9 @@ public static class ServiceCollectionExtensions
 
         collection.AddSingleton<IDataSourcePlugin, MappingPlugin>();
 
-        collection.AddScoped<IUserRepository, UserRepository>();
-        collection.AddScoped<INoteRepository, NoteRepository>();
-        collection.AddScoped<IProductRepository, ProductRepository>();
+        collection.AddSingleton<IUserRepository, UserRepository>();
+        collection.AddSingleton<INoteRepository, NoteRepository>();
+        collection.AddSingleton<IProductRepository, ProductRepository>();
 
         return collection;
     }

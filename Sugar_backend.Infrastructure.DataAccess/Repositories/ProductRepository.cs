@@ -6,8 +6,14 @@ using Sugar_backend.Application.Models.Products;
 
 namespace Sugar_backend.Infrastructure.DataAccess.Repositories;
 
-public class ProductRepository(IPostgresConnectionProvider connectionProvider) : IProductRepository
+public class ProductRepository : IProductRepository
 {
+    private static IPostgresConnectionProvider _connectionProvider;
+
+    public ProductRepository(IPostgresConnectionProvider connectionProvider)
+    {
+        _connectionProvider = connectionProvider;
+    }
     public Product? GetProductByName(string name)
     {
         const string sql = """
@@ -15,7 +21,7 @@ public class ProductRepository(IPostgresConnectionProvider connectionProvider) :
                            from product
                            where product_name = :name;
                            """;
-        var connection = connectionProvider
+        var connection = _connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -40,7 +46,7 @@ public class ProductRepository(IPostgresConnectionProvider connectionProvider) :
                            from product
                            where product_name = :name;
                            """;
-        var connection = connectionProvider
+        var connection = _connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -60,7 +66,7 @@ public class ProductRepository(IPostgresConnectionProvider connectionProvider) :
     {
         const string query = "INSERT INTO product(product_name, carbs) VALUES (($1),($2))";
 
-        var connection = connectionProvider
+        var connection = _connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
@@ -73,7 +79,7 @@ public class ProductRepository(IPostgresConnectionProvider connectionProvider) :
     }
     public IEnumerable<Product> GetProductContainsValue(string value)
     {
-        var connection = connectionProvider
+        var connection = _connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
