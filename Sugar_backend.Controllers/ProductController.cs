@@ -19,6 +19,12 @@ public class ProductController(IProductRepository productRepository)
         return new JsonResult(productRepository.GetCarbsAmount(name));
     }
 
+    [HttpGet]
+    public JsonResult GetProductContainsValue(string name)
+    {
+        return new JsonResult(productRepository.GetProductContainsValue(name));
+    }
+
     [HttpPost]
     public void AddProduct(string name, int carbs)
     {
