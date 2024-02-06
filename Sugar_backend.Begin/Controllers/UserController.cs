@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Sugar_backend.Application.Abstraction.Repositories;
 using Sugar_backend.Application.Contract.Users;
 using Sugar_backend.Application.Models.Users;
 
-namespace Controllers;
+namespace begin.Controllers;
 
+[Route($"api/[controller]")]
 [ApiController]
-[Route($"api/users")]
 public class UserController(IUserService userService) : Controller
 {
     [HttpGet("{login}/{password}")]
