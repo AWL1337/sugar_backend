@@ -8,7 +8,7 @@ namespace Controllers;
 
 [ApiController]
 [Route("api/note")]
-public class NoteController(INoteService noteService)
+public class NoteController(INoteService noteService) : Controller
 {
     [HttpGet("getAllNotes/{login}")]
     public JsonResult GetAllNotes(string login)

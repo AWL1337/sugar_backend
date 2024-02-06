@@ -7,7 +7,7 @@ namespace Controllers;
 
 [ApiController]
 [Route($"api/users")]
-public class UserController(IUserService userService)
+public class UserController(IUserService userService) : Controller
 {
     [HttpGet("{login}/{password}")]
     public JsonResult GetUser(string login, string password)

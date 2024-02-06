@@ -16,4 +16,10 @@
       <ProjectReference Include="..\Sugar_backend.Application.Contracts\Sugar_backend.Application.Contracts.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">
+        <HintPath>..\..\.nuget\packages\microsoft.aspnetcore.app.ref\8.0.1\ref\net8.0\Microsoft.AspNetCore.Mvc.ViewFeatures.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

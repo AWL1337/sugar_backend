@@ -7,7 +7,7 @@ namespace Controllers;
 
 [ApiController]
 [Route("api/product")]
-public class ProductController(IProductService productService)
+public class ProductController(IProductService productService) : Controller
 {
     [HttpGet("{name}")]
     public JsonResult GetProductByName(string name)

@@ -20,10 +20,10 @@ public static class Startup
             .AddInfrastructureDataAccess(configuration =>
             {
                 configuration.Host = "localhost";
-                configuration.Port = 6432;
+                configuration.Port = 6430;
                 configuration.Username = "postgres";
                 configuration.Password = "postgres";
-                configuration.Database = "postgres";
+                configuration.Database = "migration-postgres-1";
                 configuration.SslMode = "Prefer";
             })
             .AddControllers();
@@ -51,10 +51,10 @@ public static class Startup
         }
 
         app.UseHttpsRedirection();
-
-        app.UseAuthentication();
+        app.UseStaticFiles();
+        app.UseRouting();
         app.UseAuthorization();
-
+        
         app.MapControllers();
 
         app.Run();
