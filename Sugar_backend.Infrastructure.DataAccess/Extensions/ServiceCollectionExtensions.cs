@@ -17,11 +17,11 @@ public static class ServiceCollectionExtensions
         collection.AddPlatformPostgres(builder => builder.Configure(configuration));
         collection.AddPlatformMigrations(typeof(ServiceCollectionExtensions).Assembly);
 
-        collection.AddSingleton<IDataSourcePlugin, MappingPlugin>();
+        collection.AddScoped<IDataSourcePlugin, MappingPlugin>();
 
-        collection.AddSingleton<IUserRepository, UserRepository>();
-        collection.AddSingleton<INoteRepository, NoteRepository>();
-        collection.AddSingleton<IProductRepository, ProductRepository>();
+        collection.AddScoped<IUserRepository, UserRepository>();
+        collection.AddScoped<INoteRepository, NoteRepository>();
+        collection.AddScoped<IProductRepository, ProductRepository>();
 
         return collection;
     }
