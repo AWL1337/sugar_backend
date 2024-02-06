@@ -11,21 +11,27 @@ namespace Controllers;
 public class NoteController(INoteService noteService) : Controller
 {
     [HttpGet("getAllNotes/{login}")]
-    public JsonResult GetAllNotes(string login)
+    public JsonResult GetAllNotes(long userId)
     {
-        return new JsonResult(noteService.GetAllNotes(login));
+        return new JsonResult(noteService.GetAllNotes(userId));
+    }
+    
+    [HttpGet("statistics/{login}")]
+    public JsonResult GetStatistic(long userId)
+    {
+        return new JsonResult(noteService.GetStatistic(userId));
     }
 
     [HttpGet("carbsAmount/{dateTime}/{login}")]
-    public JsonResult GetNoteCarbsAmount(DateTime dateTime, string login)
+    public JsonResult GetNoteCarbsAmount(DateTime dateTime, long userId)
     {
-        return new JsonResult(noteService.GetNoteCarbsAmount(dateTime, login));
+        return new JsonResult(noteService.GetNoteCarbsAmount(dateTime, userId));
     }
 
     [HttpGet("notebyDate/{login}/{dateTime}")]
-    public JsonResult GetNoteByDate(string login, DateTime dateTime)
+    public JsonResult GetNoteByDate(long userId, DateTime dateTime)
     {
-        return new JsonResult(noteService.GetNoteByDate(login, dateTime));
+        return new JsonResult(noteService.GetNoteByDate(userId, dateTime));
     }
 
     [HttpPost]
@@ -40,8 +46,8 @@ public class NoteController(INoteService noteService) : Controller
     }
 
     [HttpDelete("delete/{login}/{date}")]
-    public void DeleteNote(string login, DateTime date)
+    public void DeleteNote(long userId, DateTime date)
     {
-        noteService.DeleteNote(login, date);
+        noteService.DeleteNote(userId, date);
     }
 }

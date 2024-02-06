@@ -9,24 +9,42 @@ namespace Sugar_backend.Application.Notes;
 
 public class NoteService(INoteRepository repository) : INoteService
 {
-    public IEnumerable<Note> GetAllNotes(string login)
+    public IEnumerable<Note> GetAllNotes(long userId)
     {
-        return NoteRepository.GetAllNotes(login);
+        return repository.GetAllNotes(userId);
+    }
+    
+    public KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(long userId)
+    {
+        var allNotes = repository.GetAllNotes(userId);
+
+        if (allNotes is null)
+            return new KeyValuePair<Collection<DateTime>, Collection<int>>();
+
+        Collection<DateTime> allDatesXOrdinat = new();
+        Collection<int> allSugarLevelYOrdinat = new();
+        foreach (var note in allNotes)
+        {
+            allDatesXOrdinat.Add(note.Date);
+            allSugarLevelYOrdinat.Add(note.SugarLevel);
+        }
+
+        return new KeyValuePair<Collection<DateTime>, Collection<int>>(allDatesXOrdinat, allSugarLevelYOrdinat);
     }
 
-    public Note? GetNoteByDate(string login, DateTime dateTime) => repository.GetNoteByDate(login, dateTime);
+    public Note? GetNoteByDate(long userId, DateTime dateTime) => repository.GetNoteByDate(userId, dateTime);
 
 
-    public int GetNotesInsulin(DateTime dateTime, UserInfo userInfo, string login)
+    public int GetNotesInsulin(DateTime dateTime, UserInfo userInfo, long userId)
     {
-        var carbs = GetNoteCarbsAmount(dateTime, login);
+        var carbs = GetNoteCarbsAmount(dateTime, userId);
 
         return (carbs / userInfo.grainUnit) / userInfo.carbohydrateRatio;
     }
 
-    public int GetNoteCarbsAmount(DateTime dateTime, string login)
+    public int GetNoteCarbsAmount(DateTime dateTime, long userId)
     {
-       return repository.GetNoteCarbsAmount(dateTime, login);
+       return repository.GetNoteCarbsAmount(dateTime, userId);
     }
     
     public void CreateNote(long login, NoteType type, DateTime date, int sugarLevel, Collection<NoteProduct> products)
@@ -34,8 +52,8 @@ public class NoteService(INoteRepository repository) : INoteService
         repository.AddNote(login, type, date, sugarLevel, products);
     }
 
-    public void DeleteNote(string login, DateTime date)
+    public void DeleteNote(long userId, DateTime date)
     {
-        repository.DeleteNote(login, date);
+        repository.DeleteNote(userId, date);
     }
 }

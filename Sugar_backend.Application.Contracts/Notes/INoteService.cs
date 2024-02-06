@@ -6,19 +6,21 @@ namespace Sugar_backend.Application.Contract.Notes;
 
 public interface INoteService
 {
-    IEnumerable<Note> GetAllNotes(string login);
+    IEnumerable<Note> GetAllNotes(long userId);
 
-    Note? GetNoteByDate(string login, DateTime dateTime);
-    int GetNotesInsulin(DateTime dateTime, UserInfo userInfo, string login);
+    Note? GetNoteByDate(long userId, DateTime dateTime);
+    int GetNotesInsulin(DateTime dateTime, UserInfo userInfo, long userId);
 
-    int GetNoteCarbsAmount(DateTime dateTime, string login);
+    KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(long userId);
+
+    int GetNoteCarbsAmount(DateTime dateTime, long userId);
 
     void CreateNote(
-        long userId, 
+        long userId,
         NoteType type,
         DateTime date,
         int sugarLevel,
         Collection<NoteProduct> products);
 
-    void DeleteNote(string login, DateTime date);
+    void DeleteNote(long userId, DateTime date);
 }

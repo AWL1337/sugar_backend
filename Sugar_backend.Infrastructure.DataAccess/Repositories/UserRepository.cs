@@ -135,7 +135,7 @@ public class UserRepository: IUserRepository
             reader.GetFieldValue<UserInfo>(2));
     }
 
-    public static long GetUserId(string login)
+    public long GetUserId(string login)
     {
         var connection = _connectionProvider
             .GetConnectionAsync(default)

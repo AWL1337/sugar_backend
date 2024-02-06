@@ -35,25 +35,6 @@ public class UserService(IUserRepository repository)
         repository.AddUser(login, password, name, birthday, gender, weight, height, carbohydrateRatio, breadUnit);
         return new LoginResult.Success(user);
     }
-
-    public KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(string login)
-    {
-        var allNotes = NoteRepository.GetAllNotes(login);
-
-        if (allNotes is null)
-            return new KeyValuePair<Collection<DateTime>, Collection<int>>();
-
-        Collection<DateTime> allDatesXOrdinat = new();
-        Collection<int> allSugarLevelYOrdinat = new();
-        foreach (var note in allNotes)
-        {
-            allDatesXOrdinat.Add(note.Date);
-            allSugarLevelYOrdinat.Add(note.SugarLevel);
-        }
-
-        return new KeyValuePair<Collection<DateTime>, Collection<int>>(allDatesXOrdinat, allSugarLevelYOrdinat);
-    }
-
     public bool ChangeName(string login, string newName)
     {
         return repository.ChangeName(login, newName);

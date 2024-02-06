@@ -18,9 +18,7 @@ public interface IUserService
         int height,
         int carbohydrateRatio,
         int breadUnit);
-
-    KeyValuePair<Collection<DateTime>, Collection<int>>? GetStatistic(string login);
-
+    
     bool ChangeName(string login, string newName);
     bool ChangeBirthday(string login, DateTime newBirthday);
     bool ChangeGender(string login, Gender newGender);

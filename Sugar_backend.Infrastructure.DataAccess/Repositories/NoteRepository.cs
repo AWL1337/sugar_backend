@@ -10,26 +10,23 @@ namespace Sugar_backend.Infrastructure.DataAccess.Repositories;
 
 public class NoteRepository : INoteRepository
 {
-    private static IPostgresConnectionProvider _connectionProvider;
+    private IPostgresConnectionProvider _connectionProvider;
 
     public NoteRepository(IPostgresConnectionProvider connectionProvider)
     {
         _connectionProvider = connectionProvider;
     }
-    public static IEnumerable<Note> GetAllNotes(string login)
+    public IEnumerable<Note> GetAllNotes(long userId)
     {
         var connection = _connectionProvider
             .GetConnectionAsync(default)
             .GetAwaiter()
             .GetResult();
 
-        var userId = UserRepository.GetUserId(login);
-
-
         const string sql = """
                            select *
                            from note_header
-                           where user_id =: userID
+                           where user_id =: userId
                            """;
 
         using var command = new NpgsqlCommand(sql, connection).AddParameter("user_id", userId);
@@ -50,18 +47,16 @@ public class NoteRepository : INoteRepository
         return notes;
     }
 
-    public int GetNoteCarbsAmount(DateTime dateTime, string login)
+    public int GetNoteCarbsAmount(DateTime dateTime, long userId)
     {
-        var note = GetNoteByDate(login, dateTime);
+        var note = GetNoteByDate(userId, dateTime);
 
         var carbs = note.Products.Sum(noteProduct => noteProduct.Product.Carbs);
         return carbs;
     }
 
-    public Note? GetNoteByDate(string login, DateTime dateTime)
+    public Note? GetNoteByDate(long userId, DateTime dateTime)
     {
-        var userId = UserRepository.GetUserId(login);
-
         const string sql = """
                            select *
                            from note_header
@@ -88,7 +83,7 @@ public class NoteRepository : INoteRepository
             reader.GetInt16(4),
             null);
 
-        var noteID = reader.GetInt64(0);
+        var noteId = reader.GetInt64(0);
 
         const string sqlDetail = """
                                  select *
@@ -97,7 +92,7 @@ public class NoteRepository : INoteRepository
                                  """;
 
 
-        using var commandDetail = new NpgsqlCommand(sqlDetail, connection).AddParameter("note_id", noteID);
+        using var commandDetail = new NpgsqlCommand(sqlDetail, connection).AddParameter("note_id", noteId);
         using var readerDetail = commandDetail.ExecuteReader();
 
         while (readerDetail.Read())
@@ -125,11 +120,9 @@ public class NoteRepository : INoteRepository
         return note;
     }
 
-    public void DeleteNote(string login, DateTime date)
+    public void DeleteNote(long userId, DateTime date)
     {
         var userRepository = new UserRepository(_connectionProvider);
-
-        var userId = UserRepository.GetUserId(login);
 
         const string queryHeader = "DELETE FROM note_header WHERE create_date = :date and user_id = :userId";
 

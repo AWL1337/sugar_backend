@@ -15,12 +15,6 @@ public class UserController(IUserService userService) : Controller
         return new JsonResult(userService.Login(login, password));
     }
 
-    [HttpGet("statistics/{login}")]
-    public JsonResult GetStatistic(string login)
-    {
-        return new JsonResult(userService.GetStatistic(login));
-    }
-
     [HttpPost]
     public JsonResult PostNewUser(
         string login,
